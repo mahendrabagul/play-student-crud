@@ -1,0 +1,59 @@
+@(id: Long, studentForm: Form[Student]) 
+@import helper._ 
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Update Form") {
+ 	@form(routes.Application.updateStudentPost(id)) {
+	<div class="panel panel-default">
+		<div class="panel-body">
+ 			<fieldset>
+        		<legend>Update Existing Student</legend>
+					<table class="table" border=2px>
+						<tr><td><label>Name :</label></td>
+						
+						<td>@inputText(studentForm("name")) </td></tr>
+						<tr>
+							<td><label>Birth Date :</label></td>
+							<td>@inputText(studentForm("birthDate"), 'id -> "birthDateId")
+							<img src="/assets/images/cal.gif"
+								onclick="javascript:NewCssCal('birthDateId')" style="cursor: pointer" />
+							</td>
+						</tr>
+						<tr> 
+							<td><label>Gender :</label></td>
+							<td>
+							@inputRadioGroup(
+								studentForm("gender"),	
+								options = options("Male"->"Male","Female"->"Female")				    
+							)
+ 							</td>
+ 						</tr>
+ 						<tr>
+ 							<td><label>Address :</label></td>
+ 							<td>
+							@inputText(studentForm("address")) 
+						</td></tr> 
+						<tr>
+							<td><label>Department :</label></td>
+							<td>
+							@select(studentForm("department"), 
+								options = Seq(
+									"Information Technology"->"Information Technology", 
+									"Computer Engineering"->"Computer Engineering", 
+									"Electronix & TeleCommunications"->"Electronix & TeleCommunications", 
+									"Production Engineering"->"Production Engineering",
+									"Instrumentation Engineering"->"Instrumentation Engineering", 
+									"Mechanical Engineering"->"Mechanical Engineering", 
+									"Chemical Engineering"->"Chemical Engineering", 
+									"Textile Engineering"->"Textile Engineering"
+								)								 
+							)
+						</td></tr>
+					</table>
+			</fieldset>
+ 			<input type="submit" value="Update" class="btn btn-primary">&nbsp &nbsp &nbsp or 
+			<a href="@routes.Application.index()" class="btn">Cancel</a>
+		</div>
+	</div>
+	} 
+}

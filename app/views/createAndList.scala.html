@@ -1,0 +1,200 @@
+@(studentForm: Form[Student]) 
+@import helper._ 
+@main("Student CRUD") {
+ 	@form(routes.Application.saveStudent()) {
+		<script type="text/javascript">
+			$(window).bind("load",function() {
+				var url = "/students";
+				$.get(url,function(data, status) {
+					var students = data;
+					var x;
+					for (x in students) {
+						var td1 = "<td>"
+						+ students[x].id
+						+ "</td>";
+						var td2 = "<td>"
+						+ students[x].name
+						+ "</td>";
+						var td3 = "<td>"
+						+ students[x].birthDate
+						+ "</td>";
+						var td4 = "<td>"
+						+ students[x].gender
+						+ "</td>";
+						var td5 = "<td>"
+						+ students[x].address
+						+ "</td>";
+						var td6 = "<td>"
+						+ students[x].department
+						+ "</td>";
+						var linkVal1 = "/student/update/"
+						+ students[x].id;
+						var linkVal2 = "/student/delete/"
+						+ students[x].id;
+						var updateBtn = "<a id='updateBtnId'  class='btn btn-primary' href="
+						+ linkVal1
+						+ " >Update</a>&nbsp";
+						var deleteBtn = "<a id='deleteBtnId'  class='btn btn-danger' href="
+						+ linkVal2
+						+ " >Delete</a>";
+						var td7 = "<td align='center'>"
+						+ updateBtn + deleteBtn
+						+ "</td>";
+						var row = "<tr>" + td1 + td2
+						+ td3 + td4 + td5 + td6
+						+ td7 + "</tr>";
+						var tbody = $('#students');
+							tbody.append(row);
+						}
+				});
+			});
+			
+			function checkName(){
+					//get corresponding form element
+					var isCorrect = false;
+	 				if(document.getElementById("studentName").value.length<3)	{
+	 					alert("Error: FirstName should be more than 3 characters!");
+	 					document.getElementById("studentName").focus();
+	 				}else {
+	 					re = /^\w+$/;
+					    if(!re.test(document.getElementById("studentName").value)) {
+					    	alert("Error: FirstName must contain only letters, numbers and underscores!");
+					    	document.getElementById("studentName").focus();
+					    }else{
+						    isCorrect = true;
+					    }
+	 				}
+				    return isCorrect;
+			}
+			
+			function checkAddress(){
+				//get corresponding form element
+				var isCorrect = false;
+ 				if(document.getElementById("studentAddress").value.length<3)	{
+ 					alert("Error: Address should be more than 3 characters!");
+ 					document.getElementById("studentAddress").focus();
+ 				}else {
+ 					re = /^\w+$/;
+				    if(!re.test(document.getElementById("studentAddress").value)) {
+				    	alert("Error: Address must contain only letters, numbers and underscores!");
+				    	document.getElementById("studentAddress").focus();
+				    }else{
+					    isCorrect = true;
+				    }
+ 				}
+			    return isCorrect;
+			}
+
+			function checkDate(){
+				var input=document.getElementById("birthDateId").value;
+ 				var validformat=/^\d{2}\/\d{2}\/\d{4}$/; //Basic check for format validity
+				var returnval=false;
+				if (!validformat.test(input.value))
+					alert("Invalid Date Format. Please correct and submit again.");
+				else{ //Detailed check for valid date ranges
+					var monthfield=input.value.split("/")[0];
+					var dayfield=input.value.split("/")[1];
+					var yearfield=input.value.split("/")[2];
+					var dayobj = new Date(yearfield, monthfield-1, dayfield);
+					if ((dayobj.getMonth()+1!=monthfield)||(dayobj.getDate()!=dayfield)||(dayobj.getFullYear()!=yearfield))
+						alert("Invalid Day, Month, or Year range detected. Please correct and submit again.");
+					else
+						returnval=true;
+				}
+				return returnval;
+			}
+
+			 
+		</script>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<fieldset>
+       			<legend>List of Students</legend>
+				<div id="wrapper">
+					<table class="table" border=2px>
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Name</th>
+								<th>Birth Date</th>
+								<th>Gender</th>
+								<th>Address</th>
+								<th>Department</th>
+								<th>Operations</th>
+							</tr>
+						</thead>
+						<tbody id="students">
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+
+	<br />
+	<br />
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+		<fieldset>
+        	<legend>Create New Student</legend>
+			<form method="POST">
+				<div class="form-group">
+					<table class="table" border=2px>
+						<tr>
+							<td><label>Name :</label></td>
+							<td><input type="text"  value="Mahendra Bagul" name="name" id="studentName" onchange="checkName()" class="form-control" /></td>
+						</tr>
+	
+						<tr>
+							<td><label>BirthDate :</label></td>
+							<td><input type="Text" name="birthDate"  value="02-28-1991" id="birthDateId"
+								maxlength="25" size="25" /> <img src="/assets/images/cal.gif"
+								onclick="javascript:NewCssCal('birthDateId')" style="cursor: pointer" /></td>
+						</tr>
+						<tr>
+							<td><label>Gender :</label></td>
+							<td>
+								<div class="input-group">
+									<input type="radio" name="gender" value="Male" CHECKED />Male <input
+										type="radio" name="gender" value="Female" />Female
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Address :</label></td>
+							<td><input type="text" name="address"  value="Malwadi Deola Nashik" onchange="checkAddress()" id="studentAddress" class="form-control" /></td>
+						</tr>
+						<tr>
+							<td><label>Department :</label></td>
+							<td><select name="department" class="form-control">
+									<option value="Information Technology">Information
+										Technology</option>
+									<option value="Computer Engineering">Computer
+										Engineering</option>
+									<option value="Electronix & TeleCommunications">Electronix
+										& TeleCommunications</option>
+									<option value="Production Engineering">Production
+										Engineering</option>
+									<option value="Instrumentation Engineering">Instrumentation
+										Engineering</option>
+									<option value="Mechanical Engineering">Mechanical
+										Engineering</option>
+									<option value="Chemical Engineering">Chemical
+										Engineering</option>
+									<option value="Textile Engineering">Textile Engineering</option>
+							</select></td>
+	
+						</tr>
+	
+					</table>
+					<button class='btnEdit btn btn-primary' type="submit" >Add
+						Student</button>
+				</div>
+			</form>
+			</fieldset>
+		</div>
+	</div>
+	}
+}
