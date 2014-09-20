@@ -1,4 +1,10 @@
-This is your new Play application
-=================================
-
-This file will be packaged with your application, when using `activator dist`.
+This is Simple CRUD Play Application (Student CRUD)
+Steps to run this application on your system:
+Clone repository to your system using git clone https://mahendrabagul@bitbucket.org/mahendrabagul/final-demo.git
+I assume, you have play 2.3.x version installed on your system.
+Now, create a database in MySQL on your system. Name it as you want.
+Configure application.conf file in project's conf directory.
+Specify your database name, username and password.
+Now, run activator run from your terminal window(you should be in root directory of project).
+And, goto http://localhost:9000 to view the output.
+Thanks, Mahendra Bagul
